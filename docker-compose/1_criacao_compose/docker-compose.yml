@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  db:
+    #Container de Mysql
+    image: mysql:8 # FROM mysql:8
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: meuDB
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_PASSWORD: 1234
+      MYSQL_USER: fernando
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: fernando
+      WORDPRESS_DB_PASSWORD: 1234
+      WORDPRESS_DB_NAME: meuDB
+
+volumes:
+  db_data: {}
